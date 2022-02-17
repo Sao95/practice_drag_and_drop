@@ -1,0 +1,37 @@
+<div id="app">
+  <%= image_tag 'no_image.jpg', id: :ball %>
+  <%= image_tag 'no_image_square.jpg', id: :gomibako %>
+</div>
+
+<script>
+// htmlの要素がマウスクリックされるとonmousedownイベントが呼ばれる
+ball.onmousedown = function(event){
+  document.addEventListener("mousemove",onMouseMove);
+}
+var onMouseMove = function(event){
+  // clientXはブラウザ画面の左端からの距離を取得
+  var x = event.clientX;
+  // clientYはブラウザ画面の上端からの距離を取得
+  var y = event.clientY;
+  // offsetWidth, offsetHeightは要素のサイズを取得
+  var width = ball.offsetWidth;
+  var height = ball.offsetHeight;
+  ball.style.top = (y-height/2) + "px";
+  ball.style.left = (x-width/2) + "px";
+}
+
+// マウスが離された時(onmouseupイベントが呼ばれた時)
+ball.onmouseup = function(event){
+  var x = event.clientX;
+  var y = event.clientY;
+  var width = ball.offsetWidth;
+  var height = ball.offsetHeight;
+  var gomibakoRect = gomibako.getBoundingClientRect();
+  // マウスポインタがゴミ箱の矩形内に存在するか判定する
+  if((x>=gomibakoRect.left && x<=(gomibakoRect.left+gomibakoRect.width)) && (y>=gomibakoRect.top && y<=(gomibakoRect.top+gomibakoRect.height))){
+    var app = document.getElementById("app");
+    app.removeChild(ball);
+  }
+  document.removeEventListener("mousemove",onMouseMove);
+}
+  </script>
